@@ -12,7 +12,9 @@ import (
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"k8s.io/klog/v2"
 
-	informers "Hybrid_Cloud/pkg/client/resource/v1alpha1/informers/externalversions"
+	// informers "Hybrid_Cloud/pkg/client/resource/v1alpha1/informers/externalversions"
+
+	informers "github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/informers/externalversions"
 
 	"k8s.io/sample-controller/pkg/signals"
 )

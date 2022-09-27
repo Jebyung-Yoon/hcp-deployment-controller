@@ -1,7 +1,7 @@
 # cloud.google.com/go v0.97.0
 ## explicit; go 1.11
 cloud.google.com/go/compute/metadata
-# github.com/KETI-Hybrid/hcp-pkg v0.0.0-20220922020245-a21a27848fbd
+# github.com/KETI-Hybrid/hcp-pkg v0.0.0-20220927050401-689dcbb840df
 ## explicit; go 1.18
 github.com/KETI-Hybrid/hcp-pkg/apis/hcpcluster/v1alpha1
 github.com/KETI-Hybrid/hcp-pkg/apis/hcppolicy/v1alpha1
@@ -15,7 +15,9 @@ github.com/KETI-Hybrid/hcp-pkg/client/hcppolicy/v1alpha1/clientset/versioned/typ
 github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/clientset/versioned
 github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/clientset/versioned/scheme
 github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/clientset/versioned/typed/resource/v1alpha1
+github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/informers/externalversions
 github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/informers/externalversions/internalinterfaces
+github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/informers/externalversions/resource
 github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/informers/externalversions/resource/v1alpha1
 github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/listers/resource/v1alpha1
 github.com/KETI-Hybrid/hcp-pkg/hcp-resource/hcppolicy
@@ -23,7 +25,7 @@ github.com/KETI-Hybrid/hcp-pkg/kube-resource/deployment
 github.com/KETI-Hybrid/hcp-pkg/kube-resource/kubefed
 github.com/KETI-Hybrid/hcp-pkg/kube-resource/namespace
 github.com/KETI-Hybrid/hcp-pkg/util/clusterManager
-# github.com/KETI-Hybrid/hcp-scheduler-v1 v0.0.0-20220922023459-e8c1a7766626
+# github.com/KETI-Hybrid/hcp-scheduler-v1 v0.0.0-20220923062035-e6243e1b368e
 ## explicit; go 1.18
 github.com/KETI-Hybrid/hcp-scheduler-v1/src/framework/plugins
 github.com/KETI-Hybrid/hcp-scheduler-v1/src/framework/plugins/predicates
@@ -101,6 +103,9 @@ github.com/google/go-cmp/cmp/internal/value
 # github.com/google/gofuzz v1.1.0
 ## explicit; go 1.12
 github.com/google/gofuzz
+# github.com/google/uuid v1.3.0
+## explicit
+github.com/google/uuid
 # github.com/imdario/mergo v0.3.12
 ## explicit; go 1.13
 github.com/imdario/mergo

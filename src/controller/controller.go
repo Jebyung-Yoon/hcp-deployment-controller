@@ -216,10 +216,12 @@ func (c *Controller) syncHandler(key string) error {
 
 	// 스케줄링되지 않은 hcpdeployment 감지
 	if !hcpdeployment.Spec.SchedulingNeed && !hcpdeployment.Spec.SchedulingComplete {
-		ok := deployment.DeployDeploymentFromHCPDeployment(hcpdeployment)
+		uid, ok := deployment.DeployDeploymentFromHCPDeployment(hcpdeployment)
 		if ok {
 			klog.Info("Succeed to deploy deployment %s\n", hcpdeployment.ObjectMeta.Name)
 			hcpdeployment.Spec.SchedulingComplete = true
+			hcpdeployment.Spec.UUID = uid
+			klog.Info(">>>", uid)
 			r, err := c.hcpdeploymentclientset.HcpV1alpha1().HCPDeployments("hcp").Update(context.TODO(), hcpdeployment, metav1.UpdateOptions{})
 			if err != nil {
 				klog.Error(err)

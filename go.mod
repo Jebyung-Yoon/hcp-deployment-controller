@@ -3,8 +3,8 @@ module github.com/KETI-Hybrid/hcp-deployment-controller-v1
 go 1.18
 
 require (
-	github.com/KETI-Hybrid/hcp-pkg v0.0.0-20220922020245-a21a27848fbd
-	github.com/KETI-Hybrid/hcp-scheduler-v1 v0.0.0-20220922023459-e8c1a7766626
+	github.com/KETI-Hybrid/hcp-pkg v0.0.0-20220927050401-689dcbb840df
+	github.com/KETI-Hybrid/hcp-scheduler-v1 v0.0.0-20220923062035-e6243e1b368e
 	k8s.io/api v0.25.2
 	k8s.io/apimachinery v0.25.2
 	k8s.io/client-go v0.25.2
@@ -32,6 +32,7 @@ require (
 	github.com/google/gnostic v0.5.7-v3refs // indirect
 	github.com/google/go-cmp v0.5.8 // indirect
 	github.com/google/gofuzz v1.1.0 // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/imdario/mergo v0.3.12 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
