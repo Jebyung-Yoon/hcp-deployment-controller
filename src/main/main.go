@@ -4,9 +4,9 @@ import (
 	"flag"
 	"time"
 
-	"github.com/KETI-Hybrid/hcp-pkg/util/clusterManager"
+	"hcp-pkg/util/clusterManager"
 
-	controller "github.com/KETI-Hybrid/hcp-deployment-controller-v1/src/controller"
+	controller "hcp-deployment-controller/src/controller"
 
 	kubeinformers "k8s.io/client-go/informers"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
@@ -14,7 +14,7 @@ import (
 
 	// informers "Hybrid_Cloud/pkg/client/resource/v1alpha1/informers/externalversions"
 
-	informers "github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/informers/externalversions"
+	informers "hcp-pkg/client/resource/v1alpha1/informers/externalversions"
 
 	"k8s.io/sample-controller/pkg/signals"
 )

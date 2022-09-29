@@ -5,13 +5,14 @@ import (
 	"fmt"
 	"time"
 
-	resourcev1alpha1clientset "github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/clientset/versioned"
-	resourcev1alpha1scheme "github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/clientset/versioned/scheme"
-	Informer "github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/informers/externalversions/resource/v1alpha1"
-	lister "github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/listers/resource/v1alpha1"
-	deployment "github.com/KETI-Hybrid/hcp-pkg/kube-resource/deployment"
-	"github.com/KETI-Hybrid/hcp-pkg/util/clusterManager"
-	"github.com/KETI-Hybrid/hcp-scheduler-v1/src/scheduler"
+	resourcev1alpha1clientset "hcp-pkg/client/resource/v1alpha1/clientset/versioned"
+	resourcev1alpha1scheme "hcp-pkg/client/resource/v1alpha1/clientset/versioned/scheme"
+	Informer "hcp-pkg/client/resource/v1alpha1/informers/externalversions/resource/v1alpha1"
+	lister "hcp-pkg/client/resource/v1alpha1/listers/resource/v1alpha1"
+	deployment "hcp-pkg/kube-resource/deployment"
+	"hcp-pkg/util/clusterManager"
+
+	"hcp-scheduler/src/scheduler"
 
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"

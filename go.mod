@@ -1,9 +1,8 @@
-module github.com/KETI-Hybrid/hcp-deployment-controller-v1
+module hcp-deployment-controller
 
 go 1.18
 
 require (
-	// github.com/KETI-Hybrid/hcp-pkg v1.0.2
 	k8s.io/api v0.25.2
 	k8s.io/apimachinery v0.25.2
 	k8s.io/client-go v0.25.2
@@ -12,8 +11,8 @@ require (
 )
 
 require (
-	github.com/KETI-Hybrid/hcp-pkg v1.0.3
-	github.com/KETI-Hybrid/hcp-scheduler-v1 v1.0.0
+	hcp-pkg v0.0.0
+	hcp-scheduler v0.0.0
 )
 
 require (
@@ -78,4 +77,9 @@ require (
 	sigs.k8s.io/kubefed v0.10.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.3 // indirect
 	sigs.k8s.io/yaml v1.3.0 // indirect
+)
+
+replace (
+	hcp-pkg => ../hcp-pkg
+	hcp-scheduler => ../hcp-scheduler
 )
