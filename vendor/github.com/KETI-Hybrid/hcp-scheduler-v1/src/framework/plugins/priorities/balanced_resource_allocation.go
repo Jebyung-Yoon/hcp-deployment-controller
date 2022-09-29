@@ -1,6 +1,7 @@
 package priorities
 
 import (
+	"fmt"
 	"math"
 
 	"github.com/KETI-Hybrid/hcp-scheduler-v1/src/framework/plugins"
@@ -19,6 +20,7 @@ func (pl *BalanceAllocation) Name() string {
 }
 
 func (pl *BalanceAllocation) Score(pod *v1.Pod, status *resourceinfo.CycleStatus, clusterInfo *resourceinfo.ClusterInfo) int64 {
+
 	var score int64 = 0
 	for _, node := range clusterInfo.Nodes {
 
@@ -35,8 +37,21 @@ func (pl *BalanceAllocation) Score(pod *v1.Pod, status *resourceinfo.CycleStatus
 		allocatableVolumes := len(node.Node.Status.VolumesAttached) - len(node.Node.Status.VolumesInUse)
 
 		score += balancedResourceScorer(requested, allocable, includeVolumes, requestedVolumes, allocatableVolumes)
+
 	}
+
 	return score
+}
+
+func (pl *BalanceAllocation) Normalize(tmpEachScore *util.TmpEachScore, clusterInfoList *resourceinfo.ClusterInfoList) {
+	for _, cluster := range *clusterInfoList {
+		klog.Infoln(">>", cluster.ClusterName)
+		if !cluster.IsFiltered {
+			tmpEachScore.ScoreList[cluster.ClusterName] /= tmpEachScore.Total
+			fmt.Println(tmpEachScore.ScoreList[cluster.ClusterName])
+			(*cluster).ClusterScore += int32(tmpEachScore.ScoreList[cluster.ClusterName])
+		}
+	}
 }
 
 // todo: use resource weights in the scorer function

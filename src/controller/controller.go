@@ -7,7 +7,7 @@ import (
 
 	resourcev1alpha1clientset "github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/clientset/versioned"
 	resourcev1alpha1scheme "github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/clientset/versioned/scheme"
-	informer "github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/informers/externalversions/resource/v1alpha1"
+	Informer "github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/informers/externalversions/resource/v1alpha1"
 	lister "github.com/KETI-Hybrid/hcp-pkg/client/resource/v1alpha1/listers/resource/v1alpha1"
 	deployment "github.com/KETI-Hybrid/hcp-pkg/kube-resource/deployment"
 	"github.com/KETI-Hybrid/hcp-pkg/util/clusterManager"
@@ -58,9 +58,9 @@ type Controller struct {
 func NewController(
 	kubeclientset kubernetes.Interface,
 	hcpdeploymentclientset resourcev1alpha1clientset.Interface,
-	hcpdeploymentinformer informer.HCPDeploymentInformer) *Controller {
+	hcpdeploymentInformer Informer.HCPDeploymentInformer) *Controller {
 	utilruntime.Must(resourcev1alpha1scheme.AddToScheme(scheme.Scheme))
-	klog.V(4).Info("Creating event broadcaster")
+	klog.V(4).Infof("Creating event broadcaster")
 	eventBroadCaster := record.NewBroadcaster()
 	eventBroadCaster.StartStructuredLogging(0)
 	eventBroadCaster.StartRecordingToSink(&typedcorev1.EventSinkImpl{Interface: kubeclientset.CoreV1().Events("hcp")})
@@ -70,16 +70,16 @@ func NewController(
 	controller := &Controller{
 		kubeclientset:          kubeclientset,
 		hcpdeploymentclientset: hcpdeploymentclientset,
-		hcpdeploymentLister:    hcpdeploymentinformer.Lister(),
-		hcpdeploymentSynced:    hcpdeploymentinformer.Informer().HasSynced,
+		hcpdeploymentLister:    hcpdeploymentInformer.Lister(),
+		hcpdeploymentSynced:    hcpdeploymentInformer.Informer().HasSynced,
 		workqueue:              workqueue.NewNamedRateLimitingQueue(workqueue.DefaultControllerRateLimiter(), "hcpdeployment"),
 		recorder:               recorder,
 		scheduler:              sched,
 	}
 
-	klog.Info("Setting up event handlers")
+	klog.Infof("Setting up event handlers")
 
-	hcpdeploymentinformer.Informer().AddEventHandler(cache.ResourceEventHandlerFuncs{
+	hcpdeploymentInformer.Informer().AddEventHandler(cache.ResourceEventHandlerFuncs{
 		AddFunc: controller.enqueneHCPdeployment,
 		UpdateFunc: func(old, new interface{}) {
 			controller.enqueneHCPdeployment(new)
@@ -100,30 +100,30 @@ func (c *Controller) enqueneHCPdeployment(obj interface{}) {
 }
 
 // Run will set up the event handlers for types we are interested in, as well
-// as syncing informer caches and starting workers. It will block until stopCh
+// as syncing Informer caches and starting workers. It will block until stopCh
 // is closed, at which point it will shutdown the workqueue and wait for
 // workers to finish processing their current work items.
 func (c *Controller) Run(workers int, stopCh <-chan struct{}) error {
 	defer utilruntime.HandleCrash()
 	defer c.workqueue.ShutDown()
 
-	// Start the informer factories to begin populating the informer caches
-	klog.Info("Starting HCPDeployment controller")
+	// Start the Informer factories to begin populating the Informer caches
+	klog.Infof("Starting HCPDeployment controller")
 	// Wait for the caches to be synced before starting workers
-	klog.Info("Waiting for informer caches to sync")
+	klog.Infof("Waiting for Informer caches to sync")
 	if ok := cache.WaitForCacheSync(stopCh, c.hcpdeploymentSynced); !ok {
 		return fmt.Errorf("failed to wait for caches to sync")
 	}
 
-	klog.Info("Starting workers")
+	klog.Infof("Starting workers")
 	// Launch two workers to process Foo resources
 	for i := 0; i < workers; i++ {
 		go wait.Until(c.runWorker, time.Second, stopCh)
 	}
 
-	klog.Info("Started workers")
+	klog.Infof("Started workers")
 	<-stopCh
-	klog.Info("Shutting down workers")
+	klog.Infof("Shutting down workers")
 
 	return nil
 }
@@ -159,7 +159,7 @@ func (c *Controller) processNextWorkItem() bool {
 		var ok bool
 		// We expect strings to come off the workqueue. These are of the
 		// form namespace/name. We do this as the delayed nature of the
-		// workqueue means the items in the informer cache may actually be
+		// workqueue means the items in the Informer cache may actually be
 		// more up to date that when the item was initially put onto the
 		// workqueue.
 		if key, ok = obj.(string); !ok {
@@ -218,15 +218,15 @@ func (c *Controller) syncHandler(key string) error {
 	if !hcpdeployment.Spec.SchedulingNeed && !hcpdeployment.Spec.SchedulingComplete {
 		uid, ok := deployment.DeployDeploymentFromHCPDeployment(hcpdeployment)
 		if ok {
-			klog.Info("Succeed to deploy deployment %s\n", hcpdeployment.ObjectMeta.Name)
+			klog.Infof("Succeed to deploy deployment %s\n", hcpdeployment.ObjectMeta.Name)
 			hcpdeployment.Spec.SchedulingComplete = true
 			hcpdeployment.Spec.UUID = uid
-			klog.Info(">>>", uid)
+			klog.Infof(">>>", uid)
 			r, err := c.hcpdeploymentclientset.HcpV1alpha1().HCPDeployments("hcp").Update(context.TODO(), hcpdeployment, metav1.UpdateOptions{})
 			if err != nil {
 				klog.Error(err)
 			} else {
-				klog.Info("Update HCPDeployment %s SchedulingComplete: %t\n", r.ObjectMeta.Name, r.Spec.SchedulingComplete)
+				klog.Infof("Update HCPDeployment %s SchedulingComplete: %t\n", r.ObjectMeta.Name, r.Spec.SchedulingComplete)
 			}
 		}
 	} else if !hcpdeployment.Spec.SchedulingNeed && hcpdeployment.Spec.SchedulingComplete {
@@ -261,7 +261,7 @@ func (c *Controller) syncHandler(key string) error {
 				if err != nil {
 					klog.Error(err)
 				} else {
-					klog.Info("Succeed to redeploy deployment %s in %s\n", redeploydeployment.ObjectMeta.Name, key)
+					klog.Infof("Succeed to redeploy deployment %s in %s\n", redeploydeployment.ObjectMeta.Name, key)
 					for k := range redeploytarget {
 						delete(redeploytarget, k)
 					}

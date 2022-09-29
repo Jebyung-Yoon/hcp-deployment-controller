@@ -4,10 +4,11 @@ import (
 	"context"
 	"strconv"
 
+	resourcev1alpha1apis "github.com/KETI-Hybrid/hcp-pkg/apis/resource/v1alpha1"
+	"github.com/KETI-Hybrid/hcp-pkg/hcp-resource/hcpcluster"
+	"github.com/KETI-Hybrid/hcp-pkg/util/clientset"
 	"github.com/KETI-Hybrid/hcp-pkg/util/clusterManager"
 	"github.com/google/uuid"
-
-	resourcev1alpha1apis "github.com/KETI-Hybrid/hcp-pkg/apis/resource/v1alpha1"
 
 	ns "github.com/KETI-Hybrid/hcp-pkg/kube-resource/namespace"
 
@@ -34,7 +35,7 @@ func CreateDeployment(clientset *kubernetes.Clientset, node string, deployment *
 		klog.Error(err)
 		return err
 	} else {
-		klog.Info("success to create %s [replicas : %d]\n", new_dep.Name, *deployment.Spec.Replicas)
+		klog.Infof("success to create %s [replicas : %d]\n", new_dep.Name, *deployment.Spec.Replicas)
 	}
 
 	return nil
@@ -50,6 +51,7 @@ func DeployDeploymentFromHCPDeployment(hcp_resource *resourcev1alpha1apis.HCPDep
 	// hcp_resource uid 설정
 	hcp_resource.Spec.RealDeploymentMetadata.Labels["uuid"] = strconv.Itoa(uid)
 	hcp_resource.Spec.RealDeploymentSpec.Selector.MatchLabels["uuid"] = strconv.Itoa(uid)
+	hcp_resource.Spec.RealDeploymentSpec.Template.Labels["uuid"] = strconv.Itoa(uid)
 	spec := hcp_resource.Spec.RealDeploymentSpec
 	metadata := hcp_resource.Spec.RealDeploymentMetadata
 
@@ -76,8 +78,15 @@ func DeployDeploymentFromHCPDeployment(hcp_resource *resourcev1alpha1apis.HCPDep
 			klog.Error(err)
 			return -1, false
 		} else {
-			klog.Info("succeed to deploy deployment %s in %s\n", r.ObjectMeta.Name, target.Cluster)
+			klog.Infof("succeed to deploy deployment %s in %s\n", r.ObjectMeta.Name, target.Cluster)
 		}
 	}
 	return uid, true
+}
+
+func AddDeploymentTOHCPCluster(clustername string) {
+
+	if hcpcluster.FindHCPClusterList(clientset.HCPClusterClientset, clustername) {
+		clientset.HCPClusterClientset.Create()
+	}
 }

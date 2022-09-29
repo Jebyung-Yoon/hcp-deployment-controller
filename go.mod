@@ -3,13 +3,17 @@ module github.com/KETI-Hybrid/hcp-deployment-controller-v1
 go 1.18
 
 require (
-	github.com/KETI-Hybrid/hcp-pkg v0.0.0-20220927050401-689dcbb840df
-	github.com/KETI-Hybrid/hcp-scheduler-v1 v0.0.0-20220923062035-e6243e1b368e
+	// github.com/KETI-Hybrid/hcp-pkg v1.0.2
 	k8s.io/api v0.25.2
 	k8s.io/apimachinery v0.25.2
 	k8s.io/client-go v0.25.2
 	k8s.io/klog/v2 v2.80.1
 	k8s.io/sample-controller v0.25.2
+)
+
+require (
+	github.com/KETI-Hybrid/hcp-pkg v1.0.3
+	github.com/KETI-Hybrid/hcp-scheduler-v1 v1.0.0
 )
 
 require (
